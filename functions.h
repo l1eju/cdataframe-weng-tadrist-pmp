@@ -20,7 +20,13 @@ void delete_column(COLUMN **col);
 
 void print_col(COLUMN* col);
 
+int nb_occurences(COLUMN *col, int x);
+
+int val_in_pos(COLUMN *col, int x);
+
 int greater_value(COLUMN* col, int x);
+
+int lower_value(COLUMN* col, int x);
 
 
 

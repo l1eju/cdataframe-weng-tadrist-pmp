@@ -77,10 +77,18 @@ void print_col(COLUMN* col){
 }
 
 int nb_occurences(COLUMN *col, int x) {
-    for (int i = 0; )
+    int cmpt = 0;
+    for (int i = 0; i < col->Taille_logique; i++) {
+        if (col->Donnees[i] == x) {
+            cmpt += 1;
+        }
+    }
+    return cmpt;
 }
 
-
+int val_in_pos(COLUMN *col, int x) {
+    return col->Donnees[x];
+}
 
 int greater_value(COLUMN* col, int x){
     int greater=0;
