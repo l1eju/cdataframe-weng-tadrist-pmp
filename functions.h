@@ -5,12 +5,12 @@
 #ifndef CDATAFRAME_WENG_TADRIST_PMP_FUNCTIONS_H
 #define CDATAFRAME_WENG_TADRIST_PMP_FUNCTIONS_H
 
-typedef struct{
-    char* Titre;
+typedef struct {
+    char *Titre;
     int Taille_physique;
     int Taille_logique;
-    int* Donnees;
-}COLUMN;
+    int *Donnees;
+} COLUMN;
 
 COLUMN *create_column(char* title);
 
