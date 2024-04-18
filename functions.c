@@ -8,6 +8,7 @@
 #define REALOC_SIZE 256
 
 
+
 COLUMN *create_column(char *title) {
     COLUMN *p_col = (COLUMN*)malloc(sizeof(COLUMN));
 
@@ -128,3 +129,11 @@ int lower_value(COLUMN* col, int x) {
     return cmpt;
 }
 */
+
+
+// Partie 4.2.1. Fonctionnalités
+int* cdataframe_vide(int len){
+    int* cdataframe = (int*) malloc(len*sizeof(int));
+    return cdataframe;
+}
+
