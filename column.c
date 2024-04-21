@@ -3,7 +3,7 @@
 //
 #include <stdio.h>
 #include <stdlib.h>
-#include "functions.h"
+#include "column.h"
 
 #define REALOC_SIZE 256
 
@@ -131,9 +131,4 @@ int lower_value(COLUMN* col, int x) {
 */
 
 
-// Partie 4.2.1. Fonctionnalités
-int* cdataframe_vide(int len){
-    int* cdataframe = (int*) malloc(len*sizeof(int));
-    return cdataframe;
-}
 

@@ -7,5 +7,7 @@ include_directories(.)
 
 add_executable(cdataframe_weng_tadrist_pmp
         main.c
-        functions.c
-        functions.h)
+        cdataframe.c
+        cdataframe.h
+        column.c
+        column.h)
