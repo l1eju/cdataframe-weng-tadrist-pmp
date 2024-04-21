@@ -23,6 +23,7 @@ COLUMN:
 - Retourner le nombre de valeurs qui sont inférieures à x (x donné en paramètre).
 - Retourner le nombre de valeurs qui sont égales à x (x donné en paramètre).
 
+
 Nous avons aussi commencé la seconde partie sur le CDataframe :
 
 CDATAFRAME: 
