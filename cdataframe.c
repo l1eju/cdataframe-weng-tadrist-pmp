@@ -1,4 +1,4 @@
-#include <stdio.h>
+/*#include <stdio.h>
 #include <stdlib.h>
 #include "cdataframe.h"
 
@@ -6,4 +6,4 @@
 int* cdataframe_vide(int len){
     int* cdataframe = (int*) malloc(len*sizeof(int));
     return cdataframe;
-}
+}*/
