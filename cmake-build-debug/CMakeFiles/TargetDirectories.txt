@@ -1,3 +1,0 @@
-C:/Users/fahed/CLionProjects/cdataframe-weng-tadrist-pmp/cmake-build-debug/CMakeFiles/cdataframe_weng_tadrist_pmp.dir
-C:/Users/fahed/CLionProjects/cdataframe-weng-tadrist-pmp/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/fahed/CLionProjects/cdataframe-weng-tadrist-pmp/cmake-build-debug/CMakeFiles/rebuild_cache.dir
