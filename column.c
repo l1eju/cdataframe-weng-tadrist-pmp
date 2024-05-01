@@ -116,19 +116,3 @@ int lower_value(COLUMN* col, int x) {
     }
     return lower;
 }
-
-// Remarque la fonction suivante est la même que la première ?!
-
-/* int equal_value(COLUMN *col, int x) {
-    int cmpt = 0;
-    for (int i = 0; i < col->Taille_logique; i++) {
-        if (col->Donnees[i] == x) {
-            cmpt += 1;
-        }
-    }
-    return cmpt;
-}
-*/
-
-
-
