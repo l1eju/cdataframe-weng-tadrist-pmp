@@ -1,0 +1,124 @@
+//
+// Created by wengj on 26/04/2024.
+//
+#include <stdio.h>
+#include <stdlib.h>
+#include "column2.h"
+#define REALOC_SIZE 256
+
+
+COLUMN *create_column(ENUM_TYPE type, char *title) {
+    COLUMN *p_col = (COLUMN*)malloc(sizeof(COLUMN));
+
+    p_col->title = title;
+    p_col->size = 0;    // Taille logique
+    p_col->max_size = 0;    // Taille physique
+    p_col->column_type = type;
+    p_col->data = NULL;
+    p_col->index = NULL;
+
+    return p_col;
+}
+
+int insert_value(COLUMN *col, void *value) {
+    if (col == NULL) {
+        printf("Erreur : colonne invalide.\n");
+        return 0;
+    }
+    if (col->data == NULL) {
+        col->data = (COL_TYPE **) malloc(REALOC_SIZE * sizeof(int));
+        col->max_size = REALOC_SIZE;
+        if (col->data == NULL) {
+            printf("Erreur : Pas d'espace disponible.\n");
+            return 0;
+        }
+    } else if (col->max_size == col->size) {
+        col->data = realloc(col->data, (col->max_size + REALOC_SIZE));
+        col->max_size += REALOC_SIZE;
+        if (col->data == NULL) {   // Corriger NULL par autre choe
+            printf("Erreur : Pas d'espace disponible.\n");
+            return 0;
+        }
+    }
+    if (col->data!= NULL && col->max_size > col->size) {
+        switch (col->column_type) {
+            case UINT:
+                col->data[col->size] = (unsigned int *) malloc(sizeof(unsigned int));
+                *((unsigned int *) col->data[col->size]) = *((unsigned int *) value);
+                break;
+            case INT:
+                col->data[col->size] = (int *) malloc(sizeof(int));
+                *((int *) col->data[col->size]) = *((int *) value);
+                break;
+            case CHAR:
+                col->data[col->size] = (char *) malloc(sizeof(char));
+                *((char *) col->data[col->size]) = *((char *) value);
+                break;
+            case FLOAT:
+                col->data[col->size] = (float *) malloc(sizeof(float));
+                *((float *) col->data[col->size]) = *((float *) value);
+                break;
+            case DOUBLE:
+                col->data[col->size] = (double *) malloc(sizeof(double));
+                *((double *) col->data[col->size]) = *((double *) value);
+                break;
+            case STRING:
+                col->data[col->size] = (char **) malloc(sizeof(char *));
+                *((char **) col->data[col->size]) = *((char **) value);
+                break;
+            case STRUCTURE:
+                col->data[col->size] = (void **) malloc(sizeof(void *));
+                *((void **) col->data[col->size]) = *((void **) value);
+                break;
+        }
+        col->size++;
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+void delete_column(COLUMN **col){
+    free(*((*col)->data));
+    *((*col)->data) = NULL;
+
+    free((*col)->data);
+    (*col)->data = NULL;
+
+    free((*col)->title);
+    (*col)->title = NULL;
+
+    free(*col);
+    *col=NULL;
+
+    free(col);
+    col=NULL;
+}
+
+void convert_value(COLUMN* col, unsigned long long int i, char* str, int size){
+
+    switch(col->column_type){
+        case UINT:
+            snprintf(str, size, "%d", *((unsigned int*)col->data[i]));
+            break;
+        case INT:
+            snprintf(str, size, "%d", *((int*)col->data[i]));
+            break;
+        case CHAR:
+            snprintf(str, size, "%d", *((char *)col->data[i]));
+            break;
+        case FLOAT:
+            snprintf(str, size, "%d", *((float *)col->data[i]));
+            break;
+        case DOUBLE:
+            snprintf(str, size, "%d", *((double *)col->data[i]));
+            break;
+        case STRING:
+            snprintf(str, size, "%d", *((char **)col->data[i]));
+            break;
+        case STRUCTURE:
+            snprintf(str, size, "%d", *((void **)col->data[i]));
+            break;
+    }
+
+}
