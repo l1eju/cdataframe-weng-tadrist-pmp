@@ -1,4 +1,4 @@
- //
+/*//
 // Created by wengj on 29/03/2024.
 //
 
@@ -58,6 +58,7 @@ struct column {
     unsigned long long int *index; // array of integers
 };
 typedef struct column COLUMN;
-*/
+
 
 #endif //CDATAFRAME_WENG_TADRIST_PMP_COLUMN_H
+*/

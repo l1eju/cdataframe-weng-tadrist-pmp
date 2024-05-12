@@ -7,6 +7,7 @@
 #define CDATAFRAME_WENG_TADRIST_PMP_COLUMN2_H
 
 #endif //CDATAFRAME_WENG_TADRIST_PMP_COLUMN2_H
+#define N 100
 
 enum enum_type
 {
@@ -39,3 +40,6 @@ typedef struct column {
 
 COLUMN *create_column(ENUM_TYPE type, char *title);
 int insert_value(COLUMN *col, void *value);
+void delete_column(COLUMN **col);
+void convert_value(COLUMN* col, unsigned long long int i, char* str, int size);
+void print_col(COLUMN* col);
