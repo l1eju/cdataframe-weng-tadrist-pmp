@@ -1,4 +1,4 @@
-//
+/*//
 // Created by wengj on 29/03/2024.
 //
 #include <stdio.h>
@@ -116,3 +116,4 @@ int lower_value(COLUMN* col, int x) {
     }
     return lower;
 }
+*/

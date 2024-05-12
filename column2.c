@@ -71,7 +71,7 @@ int insert_value(COLUMN *col, void *value) {
                 *((void **) col->data[col->size]) = *((void **) value);
                 break;
         }
-        col->size++;
+            col->size++;
         return 1;
     } else {
         return 0;
@@ -99,26 +99,35 @@ void convert_value(COLUMN* col, unsigned long long int i, char* str, int size){
 
     switch(col->column_type){
         case UINT:
-            snprintf(str, size, "%d", *((unsigned int*)col->data[i]));
+            snprintf(str, size, "%u", *((unsigned int*)col->data[i]));
             break;
         case INT:
             snprintf(str, size, "%d", *((int*)col->data[i]));
             break;
         case CHAR:
-            snprintf(str, size, "%d", *((char *)col->data[i]));
+            snprintf(str, size, "%c", *((char *)col->data[i]));
             break;
         case FLOAT:
-            snprintf(str, size, "%d", *((float *)col->data[i]));
+            snprintf(str, size, "%f", *((float *)col->data[i]));
             break;
         case DOUBLE:
-            snprintf(str, size, "%d", *((double *)col->data[i]));
+            snprintf(str, size, "%lf", *((double *)col->data[i]));
             break;
         case STRING:
-            snprintf(str, size, "%d", *((char **)col->data[i]));
+            snprintf(str, size, "%s", *((char **)col->data[i]));
             break;
         case STRUCTURE:
-            snprintf(str, size, "%d", *((void **)col->data[i]));
+            snprintf(str, size, "%p", *((void **)col->data[i]));
             break;
     }
 
+}
+
+void print_col(COLUMN* col){
+
+    for (int i = 0; i < col->size; i++){
+        char str[N];
+        convert_value(col, i, str, N);
+        printf("[%d] %s\n", i, str);
+    }
 }
