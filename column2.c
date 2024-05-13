@@ -25,22 +25,22 @@ int insert_value(COLUMN *col, void *value) {
         printf("Erreur : colonne invalide.\n");
         return 0;
     }
-    if (col->data == NULL) {
+    if (col->data == NULL) {    //Si col->data n'a aucun pointeur, on l'initialise
         col->data = (COL_TYPE **) malloc(REALOC_SIZE * sizeof(int));
-        col->max_size = REALOC_SIZE;
+        col->max_size = REALOC_SIZE;    //On change la valeur de la taille physique puisqu'on l'a augmenté
         if (col->data == NULL) {
             printf("Erreur : Pas d'espace disponible.\n");
             return 0;
         }
-    } else if (col->max_size == col->size) {
+    } else if (col->max_size == col->size) {    //Si l'espace de col->data est complet, on l'agrandit
         col->data = realloc(col->data, (col->max_size + REALOC_SIZE));
-        col->max_size += REALOC_SIZE;
-        if (col->data == NULL) {   // Corriger NULL par autre choe
+        col->max_size += REALOC_SIZE;   //On change la valeur de la taille physique puisqu'on l'a augmenté
+        if (col->data == NULL) {
             printf("Erreur : Pas d'espace disponible.\n");
             return 0;
         }
     }
-    if (col->data!= NULL && col->max_size > col->size) {
+    if (col->data!= NULL && col->max_size > col->size) {    //Si les conditions d'insertion de la valeur sont correcte
         switch (col->column_type) {
             case UINT:
                 col->data[col->size] = (unsigned int *) malloc(sizeof(unsigned int));
@@ -130,4 +130,43 @@ void print_col(COLUMN* col){
         convert_value(col, i, str, N);
         printf("[%d] %s\n", i, str);
     }
+}
+
+int nb_occurences(COLUMN *col, int x) {
+    if (col == NULL || col->data == NULL) {
+        printf("Erreur : Colonne invalide ou vide.\n");
+        return 0;
+    }
+
+    int cmpt = 0;
+    for (int i = 0; i < col->size; i++) {
+        if (*(int*)col->data[i] == x) {  // A méditer !
+            cmpt += 1;
+        }
+    }
+    return cmpt;
+}
+
+COL_TYPE val_in_pos(COLUMN *col, int x) {
+    return *col->data[x];
+}
+
+int greater_value(COLUMN* col, int x) {
+    int greater = 0;
+    for (int i = 0; i < col->size; i++) {
+        if (col->data[i] > x){
+            greater++;
+        }
+    }
+    return greater;
+}
+
+int lower_value(COLUMN* col, int x) {
+    int lower = 0;
+    for (int i = 0; i < col->size; i++) {
+        if (col->data[i] < x) {
+            lower++;
+        }
+    }
+    return lower;
 }

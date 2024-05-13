@@ -7,12 +7,10 @@
 
 
 int main() {
-    COLUMN *mycol = create_column(CHAR, "Column 1");
-    char a = 'A', c = 'C';
+    COLUMN *mycol = create_column(INT, "Column 1");
+    int a = 33, c = 33;
     insert_value(mycol, &a);
-    insert_value(mycol, NULL);
     insert_value(mycol, &c);
     print_col(mycol);
-
-
+    printf("%d", nb_occurences(mycol, 33));
 }
