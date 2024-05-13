@@ -43,3 +43,8 @@ int insert_value(COLUMN *col, void *value);
 void delete_column(COLUMN **col);
 void convert_value(COLUMN* col, unsigned long long int i, char* str, int size);
 void print_col(COLUMN* col);
+int nb_occurences(COLUMN *col, int x);
+COL_TYPE val_in_pos(COLUMN *col, int x);
+int greater_value(COLUMN* col, int x);
+int lower_value(COLUMN* col, int x);
+
