@@ -21,6 +21,9 @@ COLUMN *create_column(ENUM_TYPE type, char *title) {
 }
 
 int insert_value(COLUMN *col, void *value) {
+    if(value==NULL){
+        value="\0";
+    }
     if (col == NULL) {
         printf("Erreur : colonne invalide.\n");
         return 0;
@@ -128,7 +131,12 @@ void print_col(COLUMN* col){
     for (int i = 0; i < col->size; i++){
         char str[N];
         convert_value(col, i, str, N);
-        printf("[%d] %s\n", i, str);
+        if(str[0]!='\0') {
+            printf("[%d] %s\n", i, str);
+        }
+        else{
+            printf("[%d] NULL\n", i);
+        }
     }
 }
 
@@ -147,14 +155,14 @@ int nb_occurences(COLUMN *col, int x) {
     return cmpt;
 }
 
-COL_TYPE val_in_pos(COLUMN *col, int x) {
-    return *col->data[x];
+int val_in_pos(COLUMN *col, int x) {
+    return *(int*)col->data[x];
 }
 
 int greater_value(COLUMN* col, int x) {
     int greater = 0;
     for (int i = 0; i < col->size; i++) {
-        if (col->data[i] > x){
+        if (*(int*)col->data[i] > x){
             greater++;
         }
     }
@@ -164,7 +172,7 @@ int greater_value(COLUMN* col, int x) {
 int lower_value(COLUMN* col, int x) {
     int lower = 0;
     for (int i = 0; i < col->size; i++) {
-        if (col->data[i] < x) {
+        if (*(int*)col->data[i] < x) {
             lower++;
         }
     }

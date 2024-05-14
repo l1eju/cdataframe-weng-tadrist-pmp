@@ -6,11 +6,15 @@
 #include "column2.h"
 
 
+
 int main() {
-    COLUMN *mycol = create_column(INT, "Column 1");
-    int a = 33, c = 33;
+    COLUMN *mycol = create_column(CHAR, "Column 1");
+    char a = 'A', c = 'C';
     insert_value(mycol, &a);
+    insert_value(mycol, NULL);
     insert_value(mycol, &c);
+    delete_column(&(*mycol));
     print_col(mycol);
-    printf("%d", nb_occurences(mycol, 33));
+
+    //printf("%d", nb_occurences(mycol, 33));
 }

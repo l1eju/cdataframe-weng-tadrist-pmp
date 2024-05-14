@@ -21,8 +21,9 @@ typedef struct list_ {
 
 typedef LIST CDATAFRAME;
 
-CDATAFRAME *create_cdataframe(ENUM_TYPE *cdftype, int size);
-void delete_cdataframe(CDATAFRAME **cdf);
+int* cdataframe_vide();
+void remplissage_cdataframe(int** cdf, int *size);
+
 
 
 #endif //CDATAFRAME_WENG_TADRIST_PMP_CDATAFRAME_H
