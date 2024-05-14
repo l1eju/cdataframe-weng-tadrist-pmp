@@ -45,7 +45,7 @@ int main() {
     //delete_column(&(*mycol));
     print_col(mycol);
 
-    //printf("%d", nb_occurences(mycol, 33));
+    printf("Present %d fois", nb_occurences(mycol, &a));
 
     //COLUMN** cdf;
     //cdf=cdataframe_vide();
