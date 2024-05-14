@@ -47,4 +47,3 @@ int nb_occurences(COLUMN *col, char x);
 int val_in_pos(COLUMN *col, int x);
 int greater_value(COLUMN* col, int x);
 int lower_value(COLUMN* col, int x);
-

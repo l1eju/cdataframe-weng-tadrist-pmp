@@ -43,7 +43,7 @@ int insert_value(COLUMN *col, void *value) {
             return 0;
         }
     }
-    if (col->data!= NULL && col->max_size > col->size) {    //Si les conditions d'insertion de la valeur sont correcte
+    if (col->data != NULL && col->max_size > col->size) {    //Si les conditions d'insertion de la valeur sont correcte
         switch (col->column_type) {
             case UINT:
                 col->data[col->size] = (unsigned int *) malloc(sizeof(unsigned int));
@@ -82,20 +82,11 @@ int insert_value(COLUMN *col, void *value) {
 }
 
 void delete_column(COLUMN **col){
-    free(*((*col)->data));
-    *((*col)->data) = NULL;
-
     free((*col)->data);
     (*col)->data = NULL;
 
-    free((*col)->title);
-    (*col)->title = NULL;
-
     free(*col);
     *col=NULL;
-
-    free(col);
-    col=NULL;
 }
 
 void convert_value(COLUMN* col, unsigned long long int i, char* str, int size){
@@ -140,17 +131,39 @@ void print_col(COLUMN* col){
     }
 }
 
-int nb_occurences(COLUMN *col, int x) {
+int nb_occurences(COLUMN *col, void* x) {
     if (col == NULL || col->data == NULL) {
         printf("Erreur : Colonne invalide ou vide.\n");
         return 0;
     }
-
     int cmpt = 0;
-    for (int i = 0; i < col->size; i++) {
-        if (*(int*)col->data[i] == x) {  // A méditer !
-            cmpt += 1;
-        }
+
+    switch(col->column_type){
+        case UINT:
+            for (int i = 0; i < col->size; i++) {
+                if (*(unsigned int*)col->data[i] == x) {
+                    cmpt += 1;
+                }
+            }
+            break;
+        case INT:
+
+            break;
+        case CHAR:
+
+            break;
+        case FLOAT:
+
+            break;
+        case DOUBLE:
+
+            break;
+        case STRING:
+
+            break;
+        case STRUCTURE:
+
+            break;
     }
     return cmpt;
 }
