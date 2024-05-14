@@ -3,8 +3,7 @@
 //
 
 #include <stdio.h>
-#include "column2.h"
-
+#include "cdataframe.h"
 
 
 int main() {
@@ -13,8 +12,16 @@ int main() {
     insert_value(mycol, &a);
     insert_value(mycol, NULL);
     insert_value(mycol, &c);
-    delete_column(&(*mycol));
+    //delete_column(&(*mycol));
     print_col(mycol);
 
     //printf("%d", nb_occurences(mycol, 33));
+
+    COLUMN** cdf;
+    cdf=cdataframe_vide();
+
+    int len=5;
+
+    //remplissage_cdataframe(&cdf, &len);
+    //afficher_tout_cdataframe(cdf, len);
 }

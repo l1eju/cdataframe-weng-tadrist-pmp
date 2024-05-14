@@ -35,7 +35,7 @@ typedef struct column {
     ENUM_TYPE column_type;
     COL_TYPE **data; // array of pointers to stored data
     unsigned long long int *index; // array of integers
-}   COLUMN;
+}COLUMN;
 
 
 COLUMN *create_column(ENUM_TYPE type, char *title);

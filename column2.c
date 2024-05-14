@@ -29,7 +29,7 @@ int insert_value(COLUMN *col, void *value) {
         return 0;
     }
     if (col->data == NULL) {    //Si col->data n'a aucun pointeur, on l'initialise
-        col->data = (COL_TYPE **) malloc(REALOC_SIZE * sizeof(int));
+        col->data = (COL_TYPE **) malloc(REALOC_SIZE * sizeof(col->column_type));
         col->max_size = REALOC_SIZE;    //On change la valeur de la taille physique puisqu'on l'a augmenté
         if (col->data == NULL) {
             printf("Erreur : Pas d'espace disponible.\n");
@@ -131,7 +131,7 @@ void print_col(COLUMN* col){
     }
 }
 
-int nb_occurences(COLUMN *col, void* x) {
+/*int nb_occurences(COLUMN *col, void* x) {
     if (col == NULL || col->data == NULL) {
         printf("Erreur : Colonne invalide ou vide.\n");
         return 0;
@@ -190,4 +190,4 @@ int lower_value(COLUMN* col, int x) {
         }
     }
     return lower;
-}
+}*/

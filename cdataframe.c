@@ -3,12 +3,12 @@
 #include "cdataframe.h"
 
 // Partie 4.2.1. Fonctionnalités
-int* cdataframe_vide(){
-    int* cdataframe = (int*) malloc(sizeof(int *));
+COLUMN ** cdataframe_vide(){
+    COLUMN ** cdataframe = (COLUMN **) malloc(sizeof(COLUMN));
     return cdataframe;
 }
 
-void remplissage_cdataframe(int **cdf, int *size){
+void remplissage_cdataframe(COLUMN ***cdf, int *size){
     int choice;
     ENUM_TYPE type;
     char title[N];
@@ -45,12 +45,17 @@ void remplissage_cdataframe(int **cdf, int *size){
 
     col=create_column(type, title);
 
-    *cdf= realloc(*cdf, *size+1);
-    *(cdf[*size]) = col;
+    **cdf= realloc(**cdf, (*size + 1) * sizeof(COLUMN));
+    *cdf[*size] = col;
     (*size)++;
 }
 
+void afficher_tout_cdataframe(COLUMN **cdf, int size){
+    for (int i=0; i<size; i++){
+        print_col(cdf[i]);
 
+    }
+}
 
 /*
 CDATAFRAME *create_cdataframe(ENUM_TYPE *cdftype, int size){
