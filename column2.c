@@ -3,6 +3,7 @@
 //
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "column2.h"
 #define REALOC_SIZE 256
 
@@ -131,39 +132,63 @@ void print_col(COLUMN* col){
     }
 }
 
-/*int nb_occurences(COLUMN *col, void* x) {
+int nb_occurences(COLUMN *col, void* x) {
     if (col == NULL || col->data == NULL) {
         printf("Erreur : Colonne invalide ou vide.\n");
         return 0;
     }
-    int cmpt = 0;
 
+    int cmpt = 0;
     switch(col->column_type){
         case UINT:
             for (int i = 0; i < col->size; i++) {
-                if (*(unsigned int*)col->data[i] == x) {
+                if (*(unsigned int*)col->data[i] == *(unsigned int*)x) {
                     cmpt += 1;
                 }
             }
             break;
         case INT:
-
+            for (int i = 0; i < col->size; i++) {
+                if (*(int *) col->data[i] == *(int *) x) {
+                    cmpt += 1;
+                }
+            }
             break;
         case CHAR:
-
+            for (int i = 0; i < col->size; i++) {
+                if (*(char*)col->data[i] == *(char*)x) {
+                    cmpt += 1;
+                }
+            }
             break;
         case FLOAT:
-
+            for (int i = 0; i < col->size; i++) {
+                if (*(float*)col->data[i] == *(float*)x) {
+                    cmpt += 1;
+                }
+            }
             break;
         case DOUBLE:
-
+            for (int i = 0; i < col->size; i++) {
+                if (*(double*)col->data[i] == *(double*)x) {
+                    cmpt += 1;
+                }
+            }
             break;
         case STRING:
-
+            // Comparaison de chaînes de caractères
+            for (int i = 0; i < col->size; i++) {
+                if (strcmp((char*)col->data[i], (char*)x) == 0) {
+                    cmpt += 1;
+                }
+            }
             break;
         case STRUCTURE:
-
+            // Non réalisable
             break;
+        default:
+            printf("Type de colonne non pris en charge.\n");
+            return 0;
     }
     return cmpt;
 }
@@ -190,4 +215,4 @@ int lower_value(COLUMN* col, int x) {
         }
     }
     return lower;
-}*/
+}
