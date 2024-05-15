@@ -216,3 +216,4 @@ int lower_value(COLUMN* col, int x) {
     }
     return lower;
 }
+
