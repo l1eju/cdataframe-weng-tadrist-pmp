@@ -34,7 +34,7 @@ int main() {
 
     afficher_tout_cdataframe(cdf_dur, 3);
     afficher_p_ligne_cdataframe(cdf_dur, 3, 2, 4);
-    afficher_p_colonne_cdataframe(cdf_dur, 3, 0, 1);
+    afficher_p_colonne_cdataframe(cdf_dur, 0, 1);
 
 
     /*COLUMN  *mycol = create_column(CHAR, "Column 1");
