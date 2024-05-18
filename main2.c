@@ -200,13 +200,25 @@ int main() {
                 break;
             }
             case 9:{
-                int indice_col;
-                afficher_tout_cdataframe(cdf, nb_col);
-                do{
-                    printf("Entrez l'indice de la colonne à modifier: ");
-                    scanf("%d", &indice_col);
-                } while (indice_col<0 || indice_col>=nb_col);
-
+                char val[N];
+                int existence;
+                printf("Entrez la valeur à rechercher: ");
+                scanf("%s", val);
+                existence=val_existence_cdataframe(cdf, nb_col, val);
+                if(existence==1){
+                    printf("La valeur existe dans le CdataFrame\n");
+                } else{
+                    printf("La valeur n'existe pas dans le CdataFrame\n");
+                }
+                break;
+            }
+            case 10:{
+                //a completer
+                break;
+            }
+            case 11: {
+                afficher_nom_col(cdf, nb_col);
+                break;
             }
         }
     }while(choix!=0);
