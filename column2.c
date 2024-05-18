@@ -37,7 +37,7 @@ int insert_value(COLUMN *col, void *value) {
             return 0;
         }
     } else if (col->max_size == col->size) {    //Si l'espace de col->data est complet, on l'agrandit
-        col->data = realloc(col->data, (col->max_size + REALOC_SIZE));
+        col->data = realloc(col->data, ((col->max_size + REALOC_SIZE))*sizeof(col->column_type));
         col->max_size += REALOC_SIZE;   //On change la valeur de la taille physique puisqu'on l'a augmenté
         if (col->data == NULL) {
             printf("Erreur : Pas d'espace disponible.\n");
