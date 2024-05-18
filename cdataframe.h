@@ -8,7 +8,6 @@
 
 //1. Alimentation
 COLUMN ** cdataframe_vide(int size);
-void remplissage_cdataframe(COLUMN ***cdf, int *nb_col);
 
 //2. Affichage
 void afficher_tout_cdataframe(COLUMN **cdf, int size_col);

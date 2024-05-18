@@ -9,6 +9,7 @@
 
 int main() {
 
+    //1. Alimentation
 
     COLUMN  *dur1=create_column(INT, "Julie");
     int tab_1[5]={19, 13, 11, 16, 20};
@@ -28,11 +29,19 @@ int main() {
         insert_value(dur, &(tab[i]));
     }//Initalisation en dur d'une colonne de char
 
-    int cdf_dur_nb_col=3;
+    COLUMN  *dur_str=create_column(STRING, "Noms");
+    char* tab_s[5]={"Pierre", "Paul", "Elodie", "Nathalie", "Kevin"};
+    for (int i=0; i<5; i++){
+        insert_value(dur_str, &(tab_s[i]));
+    }//Initalisation en dur d'une colonne de string
+
+    int cdf_dur_nb_col=4;
     COLUMN **cdf_dur=cdataframe_vide(cdf_dur_nb_col);
     cdf_dur[0]=dur1;
     cdf_dur[1]=dur2;
     cdf_dur[2]=dur;
+    cdf_dur[3]=dur_str;
+    //Remplissage en dur du CDataframe
 
     int cdataframe_dur, r, choix;
     do{
@@ -47,11 +56,126 @@ int main() {
         cdf=cdf_dur;
         nb_col=cdf_dur_nb_col;
     }
-    else{   //Sinon l'utilisateur crée lui meme son cdataframe
-        cdf= cdataframe_vide(0);
-        nb_col=0;
-        remplissage_cdataframe(&cdf, &nb_col);
+    else{   // Remplissage du CDataframe à partir de saisies utilisateurs
+        do {
+            printf("Entrez le nombre de colonne souhaite :");
+            scanf("%d", &nb_col);
+        } while ((nb_col) < 0); //Saisie sécurisé taille CDataFrame
+        cdf= cdataframe_vide(nb_col);
+
+        for(int i=0; i<nb_col; i++) {   //Création d'une colonne et implémentation dans le CDataFrame
+            COLUMN *col;
+            char title[N][N];
+
+            printf("Entrez le titre de la colonne: ");  //Saisie titre de la colonne
+            scanf("%s", title[i]);
+
+            int choix_type, nb_lig;
+            do {                    //Saisie choix du type de la colonne
+                printf("Choisissez le type de donnee de la colonne: \n"
+                       "[1]: UNSIGNED INT\n"
+                       "[2]: INT\n"
+                       "[3]: CHAR\n"
+                       "[4]: FLOAT\n"
+                       "[5]: DOUBLE\n"
+                       "[6]: STRING\n"
+                       "[7]: STRUCTURE\n");
+                scanf("%d", &choix_type);
+            } while (choix_type < 1 || choix_type > 7);
+
+            ENUM_TYPE type;     //Transformer le choix numeroté en ENUM_TYPE
+            switch (choix_type) {   //Selon le numero donné lors du choix, on intialise le type de la colonne
+                case 1: {
+                    type = UINT;
+                    break;
+                }
+                case 2: {
+                    type = INT;
+                    break;
+                }
+                case 3: {
+                    type = CHAR;
+                    break;
+                }
+                case 4: {
+                    type = FLOAT;
+                    break;
+                }
+                case 5: {
+                    type = DOUBLE;
+                    break;
+                }
+                case 6: {
+                    type = STRING;
+                    break;
+                }
+                case 7: {
+                    type = STRUCTURE;
+                    break;
+                }
+            }
+            col = create_column(type, title[i]);   //On crée la colonne selon le titre et le type
+            cdf[i]=col; //On implémente la colonne dans le CDataFrame
+
+            do {
+                printf("Entrez le nombre de valeur que vous souhaitez saisir:");
+                scanf("%d", &nb_lig);
+            } while (nb_lig < 0);       //Saisie sécurisée sur le nombre de valeur à saisir dans la colonne créé
+
+            for (int j=0; j<nb_lig; j++) {  //Boucle où on saisie les valeurs
+                void *value;
+                printf("Entrez la valeur: ");
+                switch (cdf[i]->column_type) {
+                    case UINT: {
+                        unsigned int tmp;
+                        scanf("%u", &tmp);
+                        value = &tmp;
+                        break;
+                    }
+                    case INT: {
+                        int tmp;
+                        scanf("%d", &tmp);
+                        value = &tmp;
+                        break;
+                    }
+                    case CHAR: {
+                        char tmp;
+                        scanf(" %c", &tmp);
+                        value = &tmp;
+                        break;
+                    }
+                    case FLOAT: {
+                        float tmp;
+                        scanf("%f", &tmp);
+                        value = &tmp;
+                        break;
+                    }
+                    case DOUBLE: {
+                        double tmp;
+                        scanf("%lf", &tmp);
+                        value = &tmp;
+                        break;
+                    }
+                    case STRING: {
+                        char tmp[N];
+                        scanf("%s", tmp);
+                        value = &tmp;
+                        break;
+                    }
+                    case STRUCTURE: {
+                        void *tmp;
+                        scanf("%p", &tmp);
+                        value = &tmp;
+                        break;
+                    }
+                }
+                insert_value(cdf[i], value);    //Insérer la valeur dans la colonne du CDataFrame
+            }
+        }
+
     }
+
+    //Fonctionnalités
     do {
         do {    //Tant que l'utilisateur n'a pas choisit une fonction
             printf("A quelle fonctionnalite souhaitez vous acceder?\n"
@@ -486,6 +610,10 @@ int main() {
                 break;
             }
         }
+        printf("Contiuer le programme?\n"
+               "[0]: NON\n"
+               "[1]: OUI\n");
+        scanf("%d", &choix);
     }while(choix!=0);
 
     /*
