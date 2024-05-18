@@ -3,12 +3,12 @@
 //
 
 #include <stdio.h>
-#include <stdlib.h>
 #include "column2.h"
 #include "cdataframe.h"
 
 
 int main() {
+
 
     COLUMN  *dur1=create_column(INT, "Julie");
     int tab_1[5]={19, 13, 11, 16, 20};
@@ -17,7 +17,7 @@ int main() {
     }//Initalisation en dur d'une colonne d'int
 
     COLUMN  *dur2=create_column(INT, "Fahed");
-    int tab_f[5]={20, 17, 12, 13, 10};
+    int tab_f[5]={20, 17, 11, 13, 10};
     for (int i=0; i<5; i++){
         insert_value(dur2, &(tab_f[i]));
     }//Initalisation en dur d'une colonne d'int
@@ -34,10 +34,6 @@ int main() {
     cdf_dur[1]=dur2;
     cdf_dur[2]=dur;
 
-    //afficher_tout_cdataframe(cdf_dur, cdf_dur_nb_col);
-    //afficher_p_ligne_cdataframe(cdf_dur, cdf_dur_nb_col, 2, 4);
-    //afficher_p_colonne_cdataframe(cdf_dur, 0, 1);
-
     int cdataframe_dur, r, choix;
     do{
         printf("Souhaitez vous utiliser le CDataFrame en dur?\n");
@@ -47,16 +43,17 @@ int main() {
 
     COLUMN **cdf;
     int nb_col;
-    if (cdataframe_dur==1){
+    if (cdataframe_dur==1){ //Si l'utilisateur à choisi d'utiliser le CDataFrame en dur, on definit le cdf de toutes les fonctions sur celle ci
         cdf=cdf_dur;
         nb_col=cdf_dur_nb_col;
     }
-    else{
+    else{   //Sinon l'utilisateur crée lui meme son cdataframe
         cdf= cdataframe_vide(0);
         nb_col=0;
+        remplissage_cdataframe(&cdf, &nb_col);
     }
     do {
-        do {
+        do {    //Tant que l'utilisateur n'a pas choisit une fonction
             printf("A quelle fonctionnalite souhaitez vous acceder?\n"
                    "[1]: Afficher tout le Cdataframe\n"
                    "[2]: Afficher une partie des lignes du Cdataframe\n"
@@ -69,59 +66,104 @@ int main() {
                    "[9]: Verifier l’existence d’une valeur dans le CDataframe\n"
                    "[10]: Remplacer la valeur se trouvant dans une cellule du CDataframe\n"
                    "[11]: Afficher les noms des colonnes\n"
+                   "[12]: Afficher le nombre de ligne\n"
+                   "[13]: Afficher le nombre de colonne\n"
                    "[0]: Arreter le programme\n");
 
             r = scanf("%d", &choix);
-        } while (r==0 || choix>11 || choix<0);
+        } while (r==0 || choix>16 || choix<0);  //Si le numero saisi est incorrecte ou que ce n'est pas un entier on recommence
 
-        switch (choix){
-            case 1:{
+        switch (choix){ //Selon le choix de la fonction, on utilise les fonctions suivantes
+            case 1:{    //Afficher tout le CDataframe
                 afficher_tout_cdataframe(cdf, nb_col);
                 break;
             }
-            case 2:{
+            case 2:{    //Afficher une partie des lignes du CDataframe selon une limite fournie par l’utilisateur
                 int tete, queue;
-                printf("Entrez l'intervalle de ligne a afficher\n Debut: ");
+                printf("Entrez l'intervalle de ligne a afficher\n Debut: ");    //L'utilisateur entre les intervalles à afficher
                 scanf("%d", &tete);
                 printf("Fin: ");
                 scanf("%d", &queue);
-                afficher_p_ligne_cdataframe(cdf, nb_col, tete, queue);
+                afficher_p_ligne_cdataframe(cdf, nb_col, tete, queue);  //On affiche selon l'intervalle donné
                 break;
             }
-            case 3: {
+            case 3: {   //Afficher une partie des colonnes du CDataframe selon une limite fournie par l’utilisateur
                 int tete, queue;
                 afficher_nom_col(cdf, nb_col);
-                printf("Entrez l'intervalle de colonne a afficher\n Debut: ");
+                printf("Entrez l'intervalle de colonne a afficher\n Debut: ");  //L'utilisateur entre les intervalles à afficher
                 scanf("%d", &tete);
-                do {
+                do {                            //Saisie sécurisé
                     printf("Fin: ");
                     scanf("%d", &queue);
                 } while (queue>=nb_col);
-                afficher_p_colonne_cdataframe(cdf, tete, queue);
+                afficher_p_colonne_cdataframe(cdf, tete, queue);    //On affiche selon l'intervalle donné
                 break;
             }
-            case 4:{
+            case 4:{    //Ajouter une ligne de valeurs au CDataframe
                 int indice;
                 void* value;
                 afficher_nom_col(cdf, nb_col);
-                printf("Entrez l'indice de la colonne a ajouter la valeur : ");
+                printf("Entrez l'indice de la colonne a ajouter la valeur : "); //Saisie de la colonne pour ajouter la valeur
                 scanf("%d", &indice);
-                printf("Entrez la valeur a ajouter: ");
+                printf("Entrez la valeur a ajouter: "); //Saisie de la valeur a ajouter
 
-                value=adpater_valeur(cdf, indice);
+                switch (cdf[indice]->column_type) { //Selon le type de data de la colonne, on fait saisir la valeur puis pointé par un void*
+                    case UINT: {
+                        unsigned int tmp;
+                        scanf("%u", &tmp);
+                        value = &tmp;
+                        break;
+                    }
+                    case INT: {
+                        int tmp;
+                        scanf("%d", &tmp);
+                        value = &tmp;
+                        break;
+                    }
+                    case CHAR: {
+                        char tmp;
+                        scanf(" %c", &tmp);
+                        value = &tmp;
+                        break;
+                    }
+                    case FLOAT: {
+                        float tmp;
+                        scanf("%f", &tmp);
+                        value = &tmp;
+                        break;
+                    }
+                    case DOUBLE: {
+                        double tmp;
+                        scanf("%lf", &tmp);
+                        value = &tmp;
+                        break;
+                    }
+                    case STRING: {
+                        char tmp[N];
+                        scanf("%s", tmp);
+                        value = &tmp;
+                        break;
+                    }
+                    case STRUCTURE: {
+                        void *tmp;
+                        scanf("%p", &tmp);
+                        value = &tmp;
+                        break;
+                    }
+                }
 
-                add_lig_cdataframe(&cdf, indice,value);
+                add_lig_cdataframe(&cdf, indice,value); //On ajoute la valeur
                 break;
             }
-            case 5:{
+            case 5:{    //Supprimer une ligne de valeurs du CDataframe
                 int indice;
-                afficher_nom_col(cdf, nb_col);
+                afficher_nom_col(cdf, nb_col);  //On afficher les noms de colonnes et leur indice
                 printf("Entrez l'indice de la colonne a ajouter supprimer une valeur : ");
                 scanf("%d", &indice);
-                del_lig_cdataframe(&cdf, indice);
+                del_lig_cdataframe(&cdf, indice);   //On supprime la ligne de la colonne choisie
                 break;
             }
-            case 6:{
+            case 6:{    //Ajouter une colonne au CDataframe
                 COLUMN *col;
                 int choix_type;
                 enum enum_type type;
@@ -141,7 +183,7 @@ int main() {
                     scanf("%d", &choix_type);
                 } while (choix_type<1 || choix_type>7);
 
-                switch (choix_type) {
+                switch (choix_type) {   //Selon le numero donné lors du choix, on intialise le type de la colonne
                     case 1: {
                         type = UINT;
                         break;
@@ -171,69 +213,295 @@ int main() {
                         break;
                     }
                 }
-                col = create_column(type, title);
-                print_col(col);
-                add_col_cdataframe(&cdf, &nb_col, col);
+                col = create_column(type, title);   //On crée la colonne selon le titre et le type
+                add_col_cdataframe(&cdf, &nb_col, col); //On l'ajoute
                 break;
             }
-            case 7:{
+            case 7:{    //Supprimer une colonne du CDataframe
                 int indice_col;
-                afficher_nom_col(cdf, nb_col);
+                afficher_nom_col(cdf, nb_col);  //On affiche les colonnes et les indices
                 do{
-                printf("Entrez l'indice de la colonne à supprimer: ");
+                printf("Entrez l'indice de la colonne a supprimer: ");
                 scanf("%d", &indice_col);
-                } while (indice_col<0 || indice_col>=nb_col);
-                del_col_cdataframe(&cdf, &nb_col, indice_col);
+                } while (indice_col<0 || indice_col>=nb_col);   //On fait une saisie sécurisée
+                del_col_cdataframe(&cdf, &nb_col, indice_col);  //On supprime la colonne selon la saisie
                 break;
             }
-            case 8:{
+            case 8:{    //Renommer le titre d’une colonne du CDataframe
                 int indice_col;
                 char title[N];
-                afficher_nom_col(cdf, nb_col);
+                afficher_nom_col(cdf, nb_col);  //On affiche les colonnes et les indices
                 do{
-                    printf("Entrez l'indice de la colonne à modifier: ");
+                    printf("Entrez l'indice de la colonne a modifier: ");
                     scanf("%d", &indice_col);
-                } while (indice_col<0 || indice_col>=nb_col);
+                } while (indice_col<0 || indice_col>=nb_col);   //Saisie sécurisée de la colonne à modifier
                 printf("Entrez le nouveau titre de la colonne: ");
-                scanf("%s", title);
-                rename_title_of_col_in_cdf(&cdf, indice_col, title);
+                scanf("%s", title); //Saisie du nouveau titre
+                rename_title_of_col_in_cdf(&cdf, indice_col, title);    //Changement du titre de la colonne
                 break;
             }
-            case 9:{
+            case 9:{    //Vérifier l’existence d’une valeur (recherche) dans le CDataframe
                 char val[N];
                 int existence;
-                printf("Entrez la valeur à rechercher: ");
-                scanf("%s", val);
-                existence=val_existence_cdataframe(cdf, nb_col, val);
-                if(existence==1){
+                printf("Entrez la valeur a rechercher: ");
+                scanf("%s", val);   //Saisie de la valeur à chercher (sous forme chaine de caractère)
+                existence=val_existence_cdataframe(cdf, nb_col, val);   //Verifie son existence
+                if(existence==1){   //On affiche son existence
                     printf("La valeur existe dans le CdataFrame\n");
                 } else{
                     printf("La valeur n'existe pas dans le CdataFrame\n");
                 }
                 break;
             }
-            case 10:{
-                //a completer
+            case 10:{   //Accéder et remplacer la valeur se trouvant dans une cellule du CDataframe en utilisant son numéro de ligne et de colonne
+                int indice_col, indice_ligne;
+                do{
+                    printf("Entrez l'indice de la colonne a supprimer: ");
+                    scanf("%d", &indice_col);
+                } while (indice_col<0 || indice_col>=nb_col);   //On fait une saisie sécurisée
+                do{
+                    printf("Entrez l'indice de la ligne de la colonne a supprimer: ");
+                    scanf("%d", &indice_ligne);
+                } while (indice_ligne<0 || indice_ligne>=cdf[indice_col]->size);   //On fait une saisie sécurisée
+
+                void* value;
+                printf("Saisir la valeur de remplacement: ");
+
+                switch (cdf[indice_col]->column_type) { //Selon le type de data de la colonne, on fait saisir la valeur puis pointé par un void*
+                    case UINT: {
+                        unsigned int tmp;
+                        scanf("%u", &tmp);
+                        value = &tmp;
+                        break;
+                    }
+                    case INT: {
+                        int tmp;
+                        scanf("%d", &tmp);
+                        value = &tmp;
+                        break;
+                    }
+                    case CHAR: {
+                        char tmp;
+                        scanf(" %c", &tmp);
+                        value = &tmp;
+                        break;
+                    }
+                    case FLOAT: {
+                        float tmp;
+                        scanf("%f", &tmp);
+                        value = &tmp;
+                        break;
+                    }
+                    case DOUBLE: {
+                        double tmp;
+                        scanf("%lf", &tmp);
+                        value = &tmp;
+                        break;
+                    }
+                    case STRING: {
+                        char tmp[N];
+                        scanf("%s", tmp);
+                        value = &tmp;
+                        break;
+                    }
+                    case STRUCTURE: {
+                        void *tmp;
+                        scanf("%p", &tmp);
+                        value = &tmp;
+                        break;
+                    }
+                }
+
+                acceder_remplacer_val_cellule(&cdf,indice_ligne, indice_col, value);
                 break;
             }
-            case 11: {
-                afficher_nom_col(cdf, nb_col);
+            case 11: {  //Afficher les noms des colonnes
+                afficher_nom_col(cdf, nb_col);  //On affiche les noms et indices des colonnes
+                break;
+            }
+            case 12:{   //Afficher le nombre de lignes
+                for(int i=0; i<nb_col; i++){    //On affiche le noms et le nombres de ligne de chaque colonne
+                    printf("%s : %d ligne(s)\n",cdf[i]->title, cdf[i]->size);
+                }
+                break;
+            }
+            case 13: {  //Afficher le nombre de colonnes
+                printf("Le CDataFrame contient %d colonne(s)\n", nb_col);   //On affiche le nombre de colonne du CDataFrame
+                break;
+            }
+            case 14:{   //Nombre de cellules contenant une valeur égale à x (x donné en paramètre)
+                char str[N];
+                printf("Saisir une valeur pour connaitre son nombre d'occurence: ");
+                scanf("%s", str);   //Saisie de la valeur à chercher
+                if (val_existence_cdataframe(cdf, nb_col, str)==0){ //Si la valeur n'existe pas dans le Cdataframe
+                    printf("Nombre de cellule contenant %s : 0\n", str);    //On a 0 occurrence
+                }
+                else{   //Sinon on cherche son nombre d'occurrence et on l'affiche
+                    printf("Nombre de cellule contenant %s : %d\n", str, nb_cellule_val(cdf, nb_col, str));
+                }
+                break;
+            }
+            case 15:{   //Nombre de cellules contenant une valeur supérieure à x (x donné en paramètre)
+                int choix_type;
+                ENUM_TYPE type;
+
+                do {
+                    printf("Choisissez le type de valeur a chercher: \n"
+                           "[1]: UNSIGNED INT\n"
+                           "[2]: INT\n"
+                           "[3]: CHAR\n"
+                           "[4]: FLOAT\n"
+                           "[5]: DOUBLE\n"
+                           "[6]: STRING\n"
+                           "[7]: STRUCTURE\n");
+                    scanf("%d", &choix_type);
+                } while (choix_type < 1 || choix_type > 7);
+
+                void* value;
+                printf("Saisir la valeur de comparaison: ");
+                switch (choix_type) { //Selon le type de data de la colonne, on fait saisir la valeur puis pointé par un void*
+                    case 1: {
+                        unsigned int tmp;
+                        type=UINT;
+                        scanf("%u", &tmp);
+                        value = &tmp;
+                        break;
+                    }
+                    case 2: {
+                        int tmp;
+                        type=INT;
+                        scanf("%d", &tmp);
+                        value = &tmp;
+                        break;
+                    }
+                    case 3: {
+                        char tmp;
+                        type=CHAR;
+                        scanf(" %c", &tmp);
+                        value = &tmp;
+                        break;
+                    }
+                    case 4: {
+                        float tmp;
+                        type=FLOAT;
+                        scanf("%f", &tmp);
+                        value = &tmp;
+                        break;
+                    }
+                    case 5: {
+                        double tmp;
+                        type=DOUBLE;
+                        scanf("%lf", &tmp);
+                        value = &tmp;
+                        break;
+                    }
+                    case 6: {
+                        char tmp[N];
+                        type=STRING;
+                        scanf("%s", tmp);
+                        value = &tmp;
+                        break;
+                    }
+                    case 7: {
+                        void *tmp;
+                        type=STRUCTURE;
+                        scanf("%p", &tmp);
+                        value = &tmp;
+                        break;
+                    }
+                }
+                printf("Il y a %d cellule(s) qui contient une valeur superieur a celle donne\n", nb_cellule_val_sup(cdf, nb_col, type, value));
+                break;
+            }
+            case 16:{   //Nombre de cellules contenant une valeur inférieure à x(x donné en paramètre)
+                int choix_type;
+                ENUM_TYPE type;
+
+                do {
+                    printf("Choisissez le type de valeur a chercher: \n"
+                           "[1]: UNSIGNED INT\n"
+                           "[2]: INT\n"
+                           "[3]: CHAR\n"
+                           "[4]: FLOAT\n"
+                           "[5]: DOUBLE\n"
+                           "[6]: STRING\n"
+                           "[7]: STRUCTURE\n");
+                    scanf("%d", &choix_type);
+                } while (choix_type < 1 || choix_type > 7);
+
+                void* value;
+                printf("Saisir la valeur de comparaison: ");
+                switch (choix_type) { //Selon le type de data de la colonne, on fait saisir la valeur puis pointé par un void*
+                    case 1: {
+                        unsigned int tmp;
+                        type=UINT;
+                        scanf("%u", &tmp);
+                        value = &tmp;
+                        break;
+                    }
+                    case 2: {
+                        int tmp;
+                        type=INT;
+                        scanf("%d", &tmp);
+                        value = &tmp;
+                        break;
+                    }
+                    case 3: {
+                        char tmp;
+                        type=CHAR;
+                        scanf(" %c", &tmp);
+                        value = &tmp;
+                        break;
+                    }
+                    case 4: {
+                        float tmp;
+                        type=FLOAT;
+                        scanf("%f", &tmp);
+                        value = &tmp;
+                        break;
+                    }
+                    case 5: {
+                        double tmp;
+                        type=DOUBLE;
+                        scanf("%lf", &tmp);
+                        value = &tmp;
+                        break;
+                    }
+                    case 6: {
+                        char tmp[N];
+                        type=STRING;
+                        scanf("%s", tmp);
+                        value = &tmp;
+                        break;
+                    }
+                    case 7: {
+                        void *tmp;
+                        type=STRUCTURE;
+                        scanf("%p", &tmp);
+                        value = &tmp;
+                        break;
+                    }
+                }
+                printf("Il y a %d cellule(s) qui contient une valeur inferieur a celle donne\n", nb_cellule_val_inf(cdf, nb_col, type, value));
                 break;
             }
         }
     }while(choix!=0);
 
+    /*
 
-    /*COLUMN  *mycol = create_column(CHAR, "Column 1");
-    char a = 'A', c = 'C';
+    COLUMN  *mycol = create_column(INT, "Column 1");
+    int a = 120, b=57, c = 23;
     insert_value(mycol, &a);
-    insert_value(mycol, NULL);
+    insert_value(mycol, &b);
     insert_value(mycol, &c);
-    //delete_column(&(*mycol));
     print_col(mycol);
 
-    printf("Present %d fois", nb_occurences(mycol, &a));
+    //printf("Present %d fois", nb_occurences(mycol, &a));
 
+
+    int val=25;
+    printf("%d\n",superieur_value(mycol, &val));
     //COLUMN** cdf;
     //cdf=cdataframe_vide();
     COLUMN ** cdf = (COLUMN **) malloc(sizeof(COLUMN));
@@ -242,5 +510,6 @@ int main() {
     int len=5;
 
     remplissage_cdataframe(&cdf, &len);
-    afficher_tout_cdataframe(cdf, len);*/
+    afficher_tout_cdataframe(cdf, len);
+     */
 }

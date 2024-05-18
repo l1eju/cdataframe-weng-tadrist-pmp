@@ -6,12 +6,9 @@
 #define CDATAFRAME_WENG_TADRIST_PMP_CDATAFRAME_H
 
 
-void* adpater_valeur(COLUMN **cdf, int indice);
-
-
 //1. Alimentation
 COLUMN ** cdataframe_vide(int size);
-void remplissage_cdataframe(COLUMN ***cdf, ENUM_TYPE type, int size, char *title, void *value[], int nb_value);
+void remplissage_cdataframe(COLUMN ***cdf, int *nb_col);
 
 //2. Affichage
 void afficher_tout_cdataframe(COLUMN **cdf, int size_col);
@@ -27,6 +24,11 @@ void rename_title_of_col_in_cdf(COLUMN ***cdf,int index_col, char* new_title);
 int val_existence_cdataframe(COLUMN **cdf, int size, char* value);
 void acceder_remplacer_val_cellule(COLUMN ***cdf, int num_lig, int num_col, void* value);
 void afficher_nom_col(COLUMN **cdf, int nb_col);
+
+//4. Analyse et statistiques
+int nb_cellule_val(COLUMN **cdf, int nb_col, char* value);
+int nb_cellule_val_sup(COLUMN **cdf, int nb_col, ENUM_TYPE type, void* value);
+int nb_cellule_val_inf(COLUMN **cdf, int nb_col, ENUM_TYPE type, void* value);
 
 
 #endif //CDATAFRAME_WENG_TADRIST_PMP_CDATAFRAME_H
