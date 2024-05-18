@@ -138,8 +138,7 @@ void add_col_cdataframe(COLUMN ***cdf, int *nb_col, COLUMN *col){
 }
 
 void del_col_cdataframe(COLUMN ***cdf, int *nb_col, int col_del){
-    delete_column(cdf[col_del]);
-    afficher_p_colonne_cdataframe(*cdf, 0, 0);
+    delete_column(&((*cdf)[col_del]));
     for(int i=col_del; i<(*nb_col)-1; i++){
         (*cdf)[i]=(*cdf)[i+1];
     }
@@ -165,11 +164,7 @@ int val_existence_cdataframe(COLUMN **cdf, int nb_col, char* value){
 }
 
 void acceder_remplacer_val_cellule(COLUMN ***cdf, int num_lig, int num_col, void* value){
-
-    if (value!=NULL) {
-        (*cdf)[num_col]->data[num_lig] = value;
-    }
-
+    (*cdf)[num_col]->data[num_lig] = value;
 }
 
 void afficher_nom_col(COLUMN **cdf, int nb_col){

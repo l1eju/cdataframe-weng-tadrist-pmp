@@ -125,7 +125,7 @@ int main() {
                 COLUMN *col;
                 int choix_type;
                 enum enum_type type;
-                char title[100];
+                char title[N];
                 printf("Entrez le titre de la colonne: ");
                 scanf("%s", title);
 
@@ -174,8 +174,6 @@ int main() {
                 col = create_column(type, title);
                 print_col(col);
                 add_col_cdataframe(&cdf, &nb_col, col);
-
-                printf("coucou");
                 break;
             }
             case 7:{
@@ -185,8 +183,30 @@ int main() {
                 printf("Entrez l'indice de la colonne à supprimer: ");
                 scanf("%d", &indice_col);
                 } while (indice_col<0 || indice_col>=nb_col);
-
                 del_col_cdataframe(&cdf, &nb_col, indice_col);
+                break;
+            }
+            case 8:{
+                int indice_col;
+                char title[N];
+                afficher_nom_col(cdf, nb_col);
+                do{
+                    printf("Entrez l'indice de la colonne à modifier: ");
+                    scanf("%d", &indice_col);
+                } while (indice_col<0 || indice_col>=nb_col);
+                printf("Entrez le nouveau titre de la colonne: ");
+                scanf("%s", title);
+                rename_title_of_col_in_cdf(&cdf, indice_col, title);
+                break;
+            }
+            case 9:{
+                int indice_col;
+                afficher_tout_cdataframe(cdf, nb_col);
+                do{
+                    printf("Entrez l'indice de la colonne à modifier: ");
+                    scanf("%d", &indice_col);
+                } while (indice_col<0 || indice_col>=nb_col);
+
             }
         }
     }while(choix!=0);
