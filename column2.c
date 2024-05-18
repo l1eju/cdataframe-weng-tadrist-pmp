@@ -22,30 +22,30 @@ COLUMN *create_column(ENUM_TYPE type, char *title) {
 }
 
 int insert_value(COLUMN *col, void *value) {
-    if(value==NULL){
+    if(value==NULL){    //Si value est NULL on le transforme en caractère null
         value="\0";
     }
-    if (col == NULL) {
+    if (col == NULL) {  //Erreur
         printf("Erreur : colonne invalide.\n");
         return 0;
     }
-    if (col->data == NULL) {    //Si col->data n'a aucun pointeur, on l'initialise
+    if (col->data == NULL) {    //Si col->data n'a aucun pointeur, on l'initialise selon son type
         col->data = (COL_TYPE **) malloc(REALOC_SIZE * sizeof(col->column_type));
         col->max_size = REALOC_SIZE;    //On change la valeur de la taille physique puisqu'on l'a augmenté
-        if (col->data == NULL) {
+        if (col->data == NULL) {    //Erreur
             printf("Erreur : Pas d'espace disponible.\n");
             return 0;
         }
     } else if (col->max_size == col->size) {    //Si l'espace de col->data est complet, on l'agrandit
         col->data = realloc(col->data, ((col->max_size + REALOC_SIZE))*sizeof(col->column_type));
         col->max_size += REALOC_SIZE;   //On change la valeur de la taille physique puisqu'on l'a augmenté
-        if (col->data == NULL) {
+        if (col->data == NULL) {    //Erreur
             printf("Erreur : Pas d'espace disponible.\n");
             return 0;
         }
     }
     if (col->data != NULL && col->max_size > col->size) {    //Si les conditions d'insertion de la valeur sont correcte
-        switch (col->column_type) {
+        switch (col->column_type) {     //On crée un pointeur selon le type dans le tableau de pointeur col->data de la taille du type puis on insere la valeur
             case UINT:
                 col->data[col->size] = (unsigned int *) malloc(sizeof(unsigned int));
                 *((unsigned int *) col->data[col->size]) = *((unsigned int *) value);
@@ -75,7 +75,7 @@ int insert_value(COLUMN *col, void *value) {
                 *((void **) col->data[col->size]) = *((void **) value);
                 break;
         }
-            col->size++;
+            col->size++;    //On augment la taille logique puisqu'on vient d'ajouter une valeur
         return 1;
     } else {
         return 0;
@@ -83,16 +83,16 @@ int insert_value(COLUMN *col, void *value) {
 }
 
 void delete_column(COLUMN **col){
-    free((*col)->data);
+    free((*col)->data); //On libère le tableau de pointeur
     (*col)->data = NULL;
 
-    free(*col);
+    free(*col); //On libère la colonne
     *col=NULL;
 }
 
 void convert_value(COLUMN* col, unsigned long long int i, char* str, int size){
 
-    switch(col->column_type){
+    switch(col->column_type){   //Selon son type, on convertit la valeur en chaine de caractère
         case UINT:
             snprintf(str, size, "%u", *((unsigned int*)col->data[i]));
             break;
@@ -120,13 +120,13 @@ void convert_value(COLUMN* col, unsigned long long int i, char* str, int size){
 
 void print_col(COLUMN* col){
 
-    for (int i = 0; i < col->size; i++){
+    for (int i = 0; i < col->size; i++){    //On parcourt toute la colonne
         char str[N];
         convert_value(col, i, str, N);
-        if(str[0]!='\0') {
+        if(str[0]!='\0') {          //Si la valeur n'est pas le caractère null, on l'affiche normalement
             printf("[%d] %s\n", i, str);
         }
-        else{
+        else{                       //Sinon on affiche NULL
             printf("[%d] NULL\n", i);
         }
     }
@@ -193,27 +193,161 @@ int nb_occurences(COLUMN *col, void* x) {
     return cmpt;
 }
 
-int val_in_pos(COLUMN *col, int x) {
-    return *(int*)col->data[x];
-}
+void* val_in_pos(COLUMN *col, int indice) {
+    void* val;
+    switch(col->column_type) {   //Verifie l'infériorité selon le type
+        case UINT:
+            val=(unsigned int *) col->data[indice];
+            break;
 
-int greater_value(COLUMN* col, int x) {
-    int greater = 0;
-    for (int i = 0; i < col->size; i++) {
-        if (*(int*)col->data[i] > x){
-            greater++;
-        }
+        case INT:
+            val=(int *) col->data[indice];
+            break;
+
+        case CHAR:
+            val=(char *) col->data[indice];
+            break;
+
+        case FLOAT:
+            val=(float *) col->data[indice];
+            break;
+
+        case DOUBLE:
+            val=(double *) col->data[indice];
+            break;
+
+        case STRING:
+            val=(char **) col->data[indice];
+            break;
+
+        case STRUCTURE:
+            val=(void **) col->data[indice];
+            break;
+
+        default:
+            printf("Type de colonne non pris en charge.\n");
+            return 0;
     }
-    return greater;
+    return val;
 }
 
-int lower_value(COLUMN* col, int x) {
-    int lower = 0;
-    for (int i = 0; i < col->size; i++) {
-        if (*(int*)col->data[i] < x) {
-            lower++;
-        }
+int superieur_value(COLUMN* col, char* value) {
+    int superieur = 0;
+    switch(col->column_type){   //Verifie la superiorité selon le type
+        case UINT:
+            for (int i = 0; i < col->size; i++) {
+                if (*(unsigned int*)col->data[i] > *(unsigned int*)value) {
+                    superieur ++;
+                }
+            }
+            break;
+        case INT:
+            for (int i = 0; i < col->size; i++) {
+                if (*(int *) col->data[i] > *(int *) value) {
+                    superieur ++;
+                }
+            }
+            break;
+        case CHAR:
+            for (int i = 0; i < col->size; i++) {
+                if (*(char*)col->data[i] > *(char*)value) {
+                    superieur ++;
+                }
+            }
+            break;
+        case FLOAT:
+            for (int i = 0; i < col->size; i++) {
+                if (*(float*)col->data[i] > *(float*)value) {
+                    superieur ++;                }
+            }
+            break;
+        case DOUBLE:
+            for (int i = 0; i < col->size; i++) {
+                if (*(double*)col->data[i] > *(double*)value) {
+                    superieur ++;                }
+            }
+            break;
+        case STRING:
+            // Comparaison de chaînes de caractères
+            for (int i = 0; i < col->size; i++) {
+                if (strcmp((char*)col->data[i], (char*)value) > 0) {
+                    superieur ++;                }
+            }
+            break;
+        case STRUCTURE:
+            for (int i = 0; i < col->size; i++) {
+                if (strcmp((void *) col->data[i], (void *) value) > 0) {
+                    superieur++;
+                }
+                break;
+
+            }
+        default:
+            printf("Type de colonne non pris en charge.\n");
+            return 0;
+
     }
-    return lower;
+    return superieur;
 }
 
+int inferieur_value(COLUMN* col, char* value) {
+    int inferieur = 0;
+    switch(col->column_type){   //Verifie l'infériorité selon le type
+        case UINT:
+            for (int i = 0; i < col->size; i++) {
+                if (*(unsigned int*)col->data[i] < *(unsigned int*)value) {
+                    inferieur ++;
+                }
+            }
+            break;
+        case INT:
+            for (int i = 0; i < col->size; i++) {
+                if (*(int *) col->data[i] < *(int *) value) {
+                    inferieur ++;
+                }
+            }
+            break;
+        case CHAR:
+            for (int i = 0; i < col->size; i++) {
+                if (*(char*)col->data[i] < *(char*)value) {
+                    inferieur ++;
+                }
+            }
+            break;
+        case FLOAT:
+            for (int i = 0; i < col->size; i++) {
+                if (*(float*)col->data[i] < *(float*)value) {
+                    inferieur ++;
+                }
+            }
+            break;
+        case DOUBLE:
+            for (int i = 0; i < col->size; i++) {
+                if (*(double*)col->data[i] < *(double*)value) {
+                    inferieur ++;
+                }
+            }
+            break;
+        case STRING:
+            // Comparaison de chaînes de caractères
+            for (int i = 0; i < col->size; i++) {
+                if (strcmp((char*)col->data[i], (char*)value) < 0) {
+                    inferieur ++;
+                }
+            }
+            break;
+        case STRUCTURE:
+            for (int i = 0; i < col->size; i++) {
+                if (strcmp((void *) col->data[i], (void *) value) < 0) {
+                    inferieur++;
+                }
+                break;
+
+            }
+        default:
+            printf("Type de colonne non pris en charge.\n");
+            return 0;
+
+    }
+    return inferieur;
+}
