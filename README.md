@@ -14,7 +14,7 @@ Le projet a pour but de faciliter le traitement de données, pour une manipulati
 Notre code remplit toutes les fonctionnalités de la première partie, allant de la création d'une colonne jusqu'à la création des fonctions supplémentaires (de 4.1.1. à 4.1.5.).
 
 COLUMN:
-- Creation d'une structure COLUMN intégrant un titre, une taille physique et logique et un tableau d'entier
+- Creation d'une structure COLUMN intégrant un titre, une taille physique, logique et un tableau d'entier
 - Insérer une valeur dans une colonne
 - Libérer l’espace allouée par une colonne
 - Retourner le nombre de d’occurrences d’une valeur x (x donné en paramètre).
