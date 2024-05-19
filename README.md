@@ -11,7 +11,7 @@ Le projet a pour but de faciliter le traitement de données, pour une manipulati
 
 ## Fonctionnalités principales :
 
-Notre code remplit toutes les fonctionnalités de la première partie (COLUMN d'entier se trouvant dans les fichiers column et la CDataFrame), allant de la création d'une colonne jusqu'à la création des fonctions supplémentaires
+Notre code remplit toutes les fonctionnalités de la première partie (COLUMN d'entier se trouvant dans les fichiers column et la CDataFrame), allant de la création d'une colonne jusqu'à la création des fonctions supplémentaires.
 Nous avons programmé toutes les fonctionnalités sur le type COLUMN de la 2ème partie (COLUMN tout type de données dans les fichiers colmn2).
 Au lancement du programme l'utilisateur à le choix entre utiliser le CDataFrame donné en dur ou de créer son propre CDataFrame pour utiliser toutes les fonctionnalités.
 
