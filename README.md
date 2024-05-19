@@ -1,4 +1,4 @@
-# PROJET C : CDATAFRAME PARTIE 1
+# PROJET C : CDATAFRAME
 
 Étudiant 1: Fahed Tadrist  
 Étudiant 2: Weng Julie
