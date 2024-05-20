@@ -46,7 +46,7 @@ int main() {
 
     int cdataframe_dur, rep, choix;
     do{
-        printf("Souhaitez vous utiliser le CDataFrame en dur?\n");
+        printf("Souhaitez vous utiliser le CDataFrame en dur ?\n");
         printf("[0]: Non\n[1]: Oui\nChoix:");
         rep = scanf("%d", &cdataframe_dur);
     } while (rep == 0 || cdataframe_dur > 1 || cdataframe_dur < 0);
@@ -178,9 +178,8 @@ int main() {
 
     //Fonctionnalités
     do {
-        printf("NBCOL = %d\ncdf = %d\n", nb_col, cdf);
         do {    //Tant que l'utilisateur n'a pas choisi une fonction
-            printf("A quelle fonctionnalite souhaitez vous acceder?\n"
+            printf("A quelle fonctionnalite souhaitez vous acceder ?\n"
                    "[1]: Afficher tout le Cdataframe\n"
                    "[2]: Afficher une partie des lignes du Cdataframe\n"
                    "[3]: Afficher une partie des colonne du Cdataframe\n"
@@ -344,7 +343,7 @@ int main() {
                 int indice_col;
                 afficher_nom_col(cdf, nb_col);  //On affiche les colonnes et les indices
                 do{
-                    printf("Entrez l'indice de la colonne a supprimer:");
+                    printf("Entrez l'indice de la colonne a supprimer :");
                     scanf("%d", &indice_col);
                 } while (indice_col<0 || indice_col>=nb_col);   //On fait une saisie sécurisée
                 del_col_cdataframe(&cdf, &nb_col, indice_col);  //On supprime la colonne selon la saisie
@@ -355,10 +354,10 @@ int main() {
                 char title[N];
                 afficher_nom_col(cdf, nb_col);  //On affiche les colonnes et les indices
                 do{
-                    printf("Entrez l'indice de la colonne a modifier:");
+                    printf("Entrez l'indice de la colonne a modifier :");
                     scanf("%d", &indice_col);
                 } while (indice_col<0 || indice_col>=nb_col);   //Saisie sécurisée de la colonne à modifier
-                printf("Entrez le nouveau titre de la colonne:");
+                printf("Entrez le nouveau titre de la colonne :");
                 scanf("%s", title); //Saisie du nouveau titre
                 rename_title_of_col_in_cdf(&cdf, indice_col, title);    //Changement du titre de la colonne choisie
                 break;
@@ -367,7 +366,7 @@ int main() {
                 char val[N];
                 int existence;
 
-                printf("Entrez la valeur a rechercher:");
+                printf("Entrez la valeur a rechercher :");
                 scanf("%s", val);   //Saisie de la valeur à chercher (sous forme de chaine de caractère)
                 existence = val_existence_cdataframe(cdf, nb_col, val);   // Vérifie son existence
 
@@ -381,16 +380,16 @@ int main() {
             case 10:{   // Accéder et remplacer la valeur se trouvant dans une cellule du CDataframe en utilisant son numéro de ligne et de colonne
                 int indice_col, indice_ligne;
                 do{
-                    printf("Entrez l'indice de la colonne a supprimer:");
+                    printf("Entrez l'indice de la colonne a supprimer :");
                     scanf("%d", &indice_col);
                 } while (indice_col < 0 || indice_col >= nb_col);   // On fait une saisie sécurisée
                 do{
-                    printf("Entrez l'indice de la ligne de la colonne a supprimer:");
+                    printf("Entrez l'indice de la ligne de la colonne a supprimer :");
                     scanf("%d", &indice_ligne);
                 } while (indice_ligne < 0 || indice_ligne >= cdf[indice_col]->size);   // On fait une saisie sécurisée
 
                 void* value;
-                printf("Saisir la valeur de remplacement:");
+                printf("Saisir la valeur de remplacement :");
 
                 switch (cdf[indice_col]->column_type) { // Selon le type de data de la colonne, on fait saisir la valeur pointée par un void*
                     case UINT: {
@@ -456,7 +455,7 @@ int main() {
             }
             case 14:{   //Nombre de cellules contenant une valeur égale à x (x donné en paramètre)
                 char str[N];
-                printf("Saisir une valeur pour connaitre son nombre d'occurrence:");
+                printf("Saisir une valeur pour connaitre son nombre d'occurrence :");
                 scanf("%s", str);   //Saisie de la valeur à chercher
                 if (val_existence_cdataframe(cdf, nb_col, str) == 0){ //Si la valeur n'existe pas dans le CDataframe
                     printf("Nombre de cellule contenant %s : 0\n", str);    //On a 0 occurrence
@@ -471,7 +470,7 @@ int main() {
                 ENUM_TYPE type;
 
                 do {
-                    printf("Choisissez le type de valeur a chercher:\n"
+                    printf("Choisissez le type de valeur a chercher :\n"
                            "[1]: UNSIGNED INT\n"
                            "[2]: INT\n"
                            "[3]: CHAR\n"
@@ -483,7 +482,7 @@ int main() {
                 } while (choix_type < 1 || choix_type > 7);
 
                 void* value;
-                printf("Saisir la valeur de comparaison:");
+                printf("Saisir la valeur de comparaison :");
                 switch (choix_type) { //Selon le type de data de la colonne, on fait saisir la valeur puis pointé par un void*
                     case 1: {
                         unsigned int tmp;
@@ -543,7 +542,7 @@ int main() {
                 ENUM_TYPE type;
 
                 do {
-                    printf("Choisissez le type de valeur a chercher: \n"
+                    printf("Choisissez le type de valeur a chercher :\n"
                            "[1]: UNSIGNED INT\n"
                            "[2]: INT\n"
                            "[3]: CHAR\n"
@@ -555,7 +554,7 @@ int main() {
                 } while (choix_type < 1 || choix_type > 7);
 
                 void* value;
-                printf("Saisir la valeur de comparaison:");
+                printf("Saisir la valeur de comparaison :");
                 switch (choix_type) { //Selon le type de data de la colonne, on fait saisir la valeur pointée par un void*
                     case 1: {
                         unsigned int tmp;

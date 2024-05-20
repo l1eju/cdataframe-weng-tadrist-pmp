@@ -11,7 +11,7 @@
 //1. Alimentation
 
 COLUMN ** cdataframe_vide(int size){
-        COLUMN ** cdataframe = (COLUMN **) malloc(size*sizeof(COLUMN)); //On crée un tableau dynamique de pointeur sur des colonnes selon la taille donné en paramètre
+        COLUMN ** cdataframe = (COLUMN **) malloc(size*sizeof(COLUMN)); //On crée un tableau dynamique de pointeur sur des colonnes de type COLUMN, selon la taille donnée en paramètre
     return cdataframe;
 }
 
@@ -23,7 +23,7 @@ void afficher_tout_cdataframe(COLUMN **cdf, int nb_col){
             printf("%s\n", cdf[i]->title);  //On affiche son titre puis les valeurs de la colonne
             print_col(cdf[i]);
         }
-    }else{  //Sinon on indique simplement qu'il est vide
+    }else{  //Sinon, on indique simplement qu'il est vide
         printf("CDataFrame Vide\n");
     }
 }
