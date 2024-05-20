@@ -29,7 +29,7 @@ int insert_value(COLUMN *col, void *value) {
         printf("Erreur : colonne invalide.\n");
         return 0;
     }
-    if (col->data == NULL) {    //Si col->data n'a aucun pointeur, on l'initialise selon son type
+    if (col->data == NULL) {    //Si la colonne ne contient aucune donnée, on l'initialise selon son type
         col->data = (COL_TYPE **) malloc(REALOC_SIZE * sizeof(col->column_type));
         col->max_size = REALOC_SIZE;    //On change la valeur de la taille physique puisqu'on l'a augmenté
         if (col->data == NULL) {    //Erreur
@@ -44,8 +44,8 @@ int insert_value(COLUMN *col, void *value) {
             return 0;
         }
     }
-    if (col->data != NULL && col->max_size > col->size) {    //Si les conditions d'insertion de la valeur sont correcte
-        switch (col->column_type) {     //On crée un pointeur selon le type dans le tableau de pointeur col->data de la taille du type puis on insere la valeur
+    if (col->data != NULL && col->max_size > col->size) {    //Si les conditions d'insertion de la valeur sont correctes
+        switch (col->column_type) {     //On crée un pointeur selon le type dans le tableau de pointeur col->data de la taille du type puis on insère la valeur
             case UINT:
                 col->data[col->size] = (unsigned int *) malloc(sizeof(unsigned int));
                 *((unsigned int *) col->data[col->size]) = *((unsigned int *) value);
@@ -123,10 +123,10 @@ void print_col(COLUMN* col){
     for (int i = 0; i < col->size; i++){    //On parcourt toute la colonne
         char str[N];
         convert_value(col, i, str, N);
-        if(str[0]!='\0') {          //Si la valeur n'est pas le caractère null, on l'affiche normalement
+        if(str[0]!='\0') {  //Si la valeur n'est pas le caractère null, on l'affiche normalement
             printf("[%d] %s\n", i, str);
         }
-        else{                       //Sinon on affiche NULL
+        else{   //Sinon on affiche "NULL"
             printf("[%d] NULL\n", i);
         }
     }
