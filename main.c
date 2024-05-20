@@ -9,6 +9,7 @@
 
 int main() {
 
+
     //1. Alimentation
 
     COLUMN  *dur1=create_column(INT, "Julie");
@@ -24,7 +25,7 @@ int main() {
     }//Initalisation en dur d'une colonne d'int
 
     COLUMN  *dur=create_column(CHAR, "Lettre");
-    int tab[5]={'A', 'H', 'P', 'F', 'N'};
+    char tab[5]={'A', 'H', 'P', 'F', 'N'};
     for (int i=0; i<5; i++){
         insert_value(dur, &(tab[i]));
     }//Initalisation en dur d'une colonne de char
@@ -192,6 +193,9 @@ int main() {
                    "[11]: Afficher les noms des colonnes\n"
                    "[12]: Afficher le nombre de ligne\n"
                    "[13]: Afficher le nombre de colonne\n"
+                   "[14]: Nombre de cellules égales à x\n"
+                   "[15]: Nombre de cellules contenant une valeur supérieure à x\n"
+                   "[16]: Nombre de cellules contenant une valeur inférieure à x\n"
                    "[0]: Arreter le programme\n");
 
             r = scanf("%d", &choix);
@@ -276,13 +280,13 @@ int main() {
                     }
                 }
 
-                add_lig_cdataframe(&cdf, indice,value); //On ajoute la valeur
+                add_lig_cdataframe(&cdf, indice, value); //On ajoute la valeur
                 break;
             }
             case 5:{    //Supprimer une ligne de valeurs du CDataframe
                 int indice;
                 afficher_nom_col(cdf, nb_col);  //On afficher les noms de colonnes et leur indice
-                printf("Entrez l'indice de la colonne a ajouter supprimer une valeur : ");
+                printf("Entrez l'indice de la colonne a supprimer une ligne: ");
                 scanf("%d", &indice);
                 del_lig_cdataframe(&cdf, indice);   //On supprime la ligne de la colonne choisie
                 break;

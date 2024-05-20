@@ -75,7 +75,7 @@ int insert_value(COLUMN *col, void *value) {
                 *((void **) col->data[col->size]) = *((void **) value);
                 break;
         }
-            col->size++;    //On augment la taille logique puisqu'on vient d'ajouter une valeur
+            col->size++;    //On augmente la taille logique puisqu'on vient d'ajouter une valeur
         return 1;
     } else {
         return 0;
