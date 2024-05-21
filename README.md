@@ -6,7 +6,7 @@
 [Cliquez ici](https://github.com/l1eju/cdataframe-weng-tadrist-pmp.git) pour accéder directement au dépôt Git de notre projet.
 
 ## Explication concise :
-Le projet a pour but de nous faire travailler afin de faciliter le traitement des données d'un utilisateur, pour qu'il puisse les manipuler et y accéder de manière plus simple et optimale.
+Le projet a pour but de faciliter le traitement des données d'un utilisateur, pour qu'il puisse les manipuler et y accéder de manière plus simple et optimale.
 
 ## Fonctionnalités principales :
 
